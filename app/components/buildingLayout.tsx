@@ -44,11 +44,23 @@ export default function BuildingLayout() {
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
-    if (landLength < 10 || landWidth < 10) {
+    // if (landLength < 10 || landWidth < 10) {
+    //   Swal.fire({
+    //     icon: "warning",
+    //     title: "The land size is too small!",
+    //     text: "Make sure the length and width of the land is at least 10 meters.",
+    //   });
+    //   return;
+    // }
+
+    if (["baliutara", "baliselatan"].includes(baliOrientation) && 
+      ((landLength < 6 && landWidth < 7) ||
+      (landLength < 7 && landWidth < 6) ||
+      (landLength === landWidth))) {
       Swal.fire({
         icon: "warning",
-        title: "The land size is too small!",
-        text: "Make sure the length and width of the land is at least 10 meters.",
+        title: "Ukuran Lahan Tidak Sesuai!",
+        text: "Luas tanah minimal 7 meter x 6 meter dan tidak diperbolehkan memiliki panjang dan lebar yang sama.",
       });
       return;
     }
@@ -66,6 +78,7 @@ export default function BuildingLayout() {
 
     const response = await fetch(
       "https://bali-building-simulator-api-7n41.vercel.app/api/buildingLocation",
+      // "http://localhost:9000/api/buildingLocation",
       {
         method: "POST",
         body: JSON.stringify(fields),
@@ -183,6 +196,9 @@ export default function BuildingLayout() {
             onChange={(e) => setFootLength(parseFloat(e.target.value))}
             required
           />
+          <span className="text-sm text-[#5A5A5A] mt-1">
+            Rata-rata panjangnya sekitar 25 cm pada orang dewasa.
+          </span>
         </div>
 
         <div className="mb-4">
@@ -198,6 +214,9 @@ export default function BuildingLayout() {
             onChange={(e) => setSideFootLength(parseFloat(e.target.value))}
             required
           />
+          <span className="text-sm text-[#5A5A5A] mt-1">
+            Rata-rata panjangnya sekitar 10 cm pada orang dewasa.
+          </span>
         </div>
 
         <div className="mb-4">
@@ -213,6 +232,9 @@ export default function BuildingLayout() {
             onChange={(e) => setLandLength(parseFloat(e.target.value) || 0)}
             required
           />
+          <span className="text-sm text-[#5A5A5A] mt-1">
+            Minimal panjang lahan adalah 6 atau 7 meter. Selisih panjang dan lebar disarankan tidak lebih dari 1 meter.
+          </span>
         </div>
 
         <div className="mb-4">
@@ -228,6 +250,9 @@ export default function BuildingLayout() {
             onChange={(e) => setLandWidth(parseFloat(e.target.value) || 0)}
             required
           />
+          <span className="text-sm text-[#5A5A5A] mt-1">
+            Minimal lebar lahan adalah 6 atau 7 meter. Selisih panjang dan lebar disarankan tidak lebih dari 1 meter.
+          </span>
         </div>
 
         {landArea !== null && (
